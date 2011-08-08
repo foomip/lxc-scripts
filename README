@@ -1,0 +1,31 @@
+Scripts developed by Nelsaround on Pascoal - work started on 8 August 2011
+
+These scripts have been tested on the following platforms:
+lxc 0.7.4 and Ubuntu 11.04
+
+Testing on new platforms to be done as and when required, if you have tested
+these scripts, please let us know and contribute your feedback.
+
+Configuration files for containers are assumed to be located in /etc/lxc/<name>.conf,
+where <name> is the name of the container. It is important for the correct functioning
+of this script that the config file for the container matches the container name.
+eg. container test has config file /etc/lxc/test.conf - consequently you would start the 
+container with the following command: "lxc-start -f /etc/lxc/test.conf -n test". The 
+script uses this name matching to correctly identify the PID for the container init 
+process and send the shutdown signal to the correct place.
+
+******** lxc-graceful **********
+gracefully shut down a container by issuing an init 0 - done via -SIGPWR signal.
+
+In order to use the script, make sure the following lines are appended to the 
+/etc/inittab file of your container:
+p0::powerfail:/sbin/init 0
+
+Script usage:
+lxc-graceful <name>
+
+where <name> is the container name commonly used in combination with --name or
+-n commands in standard lxc scripts.
+
+##############################################################################
+More scripts will be added when and if required.

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+########################################################################
+#
+# script written by Nelson Pascoal - used to gracefully shut down a 
+# lxc container instance.
+#
+########################################################################
+
+GREP=`which grep`
+PS=`which ps`
+AWK=`which awk`
+KILL=`which kill`
+WC=`which wc`
+LXCINFO=`which lxc-info`
+
+container=$1
+conf="/etc/lxc/$container.conf"
+
+if [ -e $conf ]
+then
+        running=`$LXCINFO -n $container | $GREP STOPPED | $WC -l`
+        if [ $running -eq 0 ]
+        then
+                # discover pid for lxc-start process
+                lxcid=`$PS -ef | $GREP $conf | $GREP -v $GREP | $AWK '{print $2}'`
+                # use lxc-start process pid to discover correct init process
+                initid=`$PS -ef | $GREP $lxcid | $GREP -v $GREP | $GREP init | $AWK '{print $2}'`
+
+                # send shutdown signal to init process
+                $KILL -SIGPWR $initid
+                running=`$LXCINFO -n $container | $GREP STOPPED | $WC -l`
+
+                echo -n "Waiting for container $container to stop."
+
+                while [ $running -eq 0 ]
+                do
+                        sleep 1
+                        echo -n "."
+                        running=`$LXCINFO -n $container | $GREP STOPPED | $WC -l`
+                done
+		
+		echo
+                echo "Container $container stopped successfully"
+                exit 0
+        else
+                echo "Container $container is currently is status STOPPED - container shutdown terminated"
+                exit 2
+        fi
+else
+        echo "Container config file $conf not found - unable to initiate container shutdown"
+        exit 1
+fi
