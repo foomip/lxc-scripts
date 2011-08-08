@@ -1,9 +1,9 @@
-Scripts developed by Nelsaround on Pascoal - work started on 8 August 2011
+Scripts developed by Nelson Pascoal - work started on 8 August 2011
 
 These scripts have been tested on the following platforms:
 lxc 0.7.4 and Ubuntu 11.04
 
-Testing on new platforms to be done as and when required, if you have tested
+Testing on new platforms to be done as and when required. If you have tested
 these scripts, please let us know and contribute your feedback.
 
 Configuration files for containers are assumed to be located in /etc/lxc/<name>.conf,
