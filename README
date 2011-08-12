@@ -27,5 +27,19 @@ lxc-graceful <name>
 where <name> is the container name commonly used in combination with --name or
 -n commands in standard lxc scripts.
 
+
+******** lxc-config **********
+original script from 
+http://lxc.sourceforge.net/index.php/about/kernel-namespaces/network/configuration/
+
+configure required dev setup for a new container environment - typically for 
+environments created using debootstrap.
+
+Script usage:
+cd <container_rootfs>
+lxc-config
+
+where <container_rootfs> is the root filesystem for the container.
+
 ##############################################################################
 More scripts will be added when and if required.
